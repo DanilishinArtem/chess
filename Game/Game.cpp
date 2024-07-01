@@ -1,21 +1,25 @@
 #include "Game.h"
 #include <iostream>
 
+
 Game::Game() : currentPlayer(WHITE) {}
 
 void Game::start() {
-    while(true){
-        board.display();
-        cout << "Player " << (currentPlayer == WHITE ? "WHITE" : "BLACK") << "'s turn." << endl;
-
-        int startX, startY, endX, endY;
-        cout << "Enter move (startX startY endX endY): ";
-        cin >> startX >> startY >> endX >> endY;
-
-        if(board.movePiece(startX, startY, endX, endY)){
-            currentPlayer = (currentPlayer == WHITE ? BLACK : WHITE);
-        }else{
-            cout << "Invalid move, try again." << endl;
+    // Creating the window
+    sf::RenderWindow window(sf::VideoMode(800, 800), "Chess Game");
+    // Creating the board
+    Board board;
+    // Basic cycle
+    while(window.isOpen()){
+        sf::Event event;
+        while(window.pollEvent(event)){
+            if(event.type == sf::Event::Closed){
+                window.close();
+            }
         }
+
+        window.clear();
+        board.display(window);
+        window.display();
     }
 }

@@ -56,16 +56,31 @@ bool Board::movePiece(int startX, int startY, int endX, int endY){
     return false;
 }
 
-void Board::display() const {
-    for(int y = 7; y >= 0; y--){
+void Board::display(sf::RenderWindow& window) const {
+    const int cellSize = 100;
+    const int boardSize = 8;
+
+    sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));
+
+    for(int y = boardSize; y >= 0; y--){
         cout << string(2, ' ');
-        for(int x = 0; x < 8; x++){
+        for(int x = 0; x < boardSize; x++){
+            // Draw the cell
+            // if((x + y) % 2 == 0){
+            //     cell.setFillColor(sf::Color::Cyan);
+            // }else{
+            //     cell.setFillColor(sf::Color::Blue);
+            // }
+            // cell.setPosition(x * cellSize, y * cellSize);
+            // window.draw(cell);
+            // Draw the piece            
             Piece* piece = getPiece(x, y);
-            cout << std::setw(1);
             if(piece){
-                cout << " "<< piece->getName() << " ";
-            }else{
-                cout << " . ";
+                // cout << piece->getName() << " " << endl;
+                sf::Sprite sprite;
+                sprite.setTexture(piece->getTexture());
+                sprite.setPosition(x * cellSize, y * cellSize);
+                window.draw(sprite);
             }
         }
         cout << endl;
