@@ -9,7 +9,7 @@ class Pawn : public Piece {
 public:
     Pawn(Color color) : Piece(color) {}
 
-    string getName() const override { return color == WHITE ? "WP" : "BP"; }
+    string getName() const override { return color == WHITE ? "♙" : "♟"; }
 
     bool isValidMove(int startX, int startY, int endX, int endY) const override {
         if(color == WHITE){

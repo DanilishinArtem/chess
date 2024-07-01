@@ -8,7 +8,7 @@ class Queen : public Piece {
 public:
     Queen(Color color) : Piece(color) {}
 
-    string getName() const override {return color == WHITE ? "WQ" : "BQ";}
+    string getName() const override {return color == WHITE ? "♕" : "♛";}
 
     bool isValidMove(int startX, int startY, int endX, int endY) const override {
         int dx = abs(endX - startX);

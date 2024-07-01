@@ -7,7 +7,7 @@
 class King : public Piece {
 public:
     King(Color color) : Piece(color) {}
-    string getName() const override { return color == WHITE ? "WK" : "BK"; }
+    string getName() const override { return color == WHITE ? "♔" : "♚"; }
     bool isValidMove(int startX, int startY, int endX, int endY) const override {
         int dx = abs(endX - startX);
         int dy = abs(endY - startY);
