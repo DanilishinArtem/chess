@@ -12,6 +12,8 @@
 #include "PiecesClasses/Knight.h"
 #include "PiecesClasses/Pawn.h"
 
+const int Width = 800;
+const int Height = 800;
 
 class Board {
 public:

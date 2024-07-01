@@ -12,12 +12,12 @@ public:
         if(!loaded) {
             cout << "Error loading texture" << endl;
         }
-        cout << "Loaded for " << getName() << ", status: " << loaded << endl;
+        // cout << "Loaded for " << getName() << ", status: " << loaded << endl;
     }
 
     string getName() const override { return color == WHITE ? "white_pawn" : "black_pawn"; }
 
-    string getTextureFile() const override { return color == WHITE ? "/home/adanilishin/chess/Game/Board/images/white_pawn.png" : "/home/adanilishin/chess/Game/Board/images/black_pawn.png"; }
+    string getTextureFile() const override { return color == WHITE ? "/home/adanilishin/chess/Game/Board/PiecesClasses/images/white_pawn.png" : "/home/adanilishin/chess/Game/Board/PiecesClasses/images/black_pawn.png"; }
 
     bool isValidMove(int startX, int startY, int endX, int endY) const override {
         if(color == WHITE){

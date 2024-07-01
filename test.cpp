@@ -28,5 +28,5 @@ int main() {
 }
 
 
-// g++ main.cpp -o sfmlTest -lsfml-graphics -lsfml-window -lsfml-system
+// g++ test.cpp -o sfmlTest -lsfml-graphics -lsfml-window -lsfml-system
 // sudo apt-get install libsfml-dev

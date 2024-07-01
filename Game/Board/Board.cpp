@@ -66,19 +66,25 @@ void Board::display(sf::RenderWindow& window) const {
         cout << string(2, ' ');
         for(int x = 0; x < boardSize; x++){
             // Draw the cell
-            // if((x + y) % 2 == 0){
-            //     cell.setFillColor(sf::Color::Cyan);
-            // }else{
-            //     cell.setFillColor(sf::Color::Blue);
-            // }
-            // cell.setPosition(x * cellSize, y * cellSize);
-            // window.draw(cell);
+            if((x + y) % 2 == 0){
+                cell.setFillColor(sf::Color::Cyan);
+            }else{
+                cell.setFillColor(sf::Color::Blue);
+            }
+            cell.setPosition(x * cellSize, y * cellSize);
+            window.draw(cell);
             // Draw the piece            
             Piece* piece = getPiece(x, y);
             if(piece){
-                // cout << piece->getName() << " " << endl;
                 sf::Sprite sprite;
-                sprite.setTexture(piece->getTexture());
+                sf::Texture texture = piece->getTexture();
+                // Scaling:
+                sf::Vector2u textureSize = texture.getSize();
+                float scaleX = static_cast<float>(Width) / textureSize.x;
+                float scaleY = static_cast<float>(Height) / textureSize.y;
+                sprite.setScale(scaleX / 8.0f, scaleY / 8.0f);
+                // End of scaling...
+                sprite.setTexture(texture);
                 sprite.setPosition(x * cellSize, y * cellSize);
                 window.draw(sprite);
             }

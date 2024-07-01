@@ -16,7 +16,7 @@ public:
 
     string getName() const override { return color == WHITE ? "white_rook" : "black_rook"; }
 
-    string getTextureFile() const override { return color == WHITE ? "/home/adanilishin/chess/Game/Board/images/white_rook.png" : "/home/adanilishin/chess/Game/Board/images/black_rook.png"; }
+    string getTextureFile() const override { return color == WHITE ? "/home/adanilishin/chess/Game/Board/PiecesClasses/images/white_rook.png" : "/home/adanilishin/chess/Game/Board/PiecesClasses/images/black_rook.png"; }
 
     bool isValidMove(int startX, int startY, int endX, int endY) const override {
         return (startX == endX || startY == endY);
