@@ -26,6 +26,14 @@ public:
             return (endX == startX && endY == startY - 1) || (startY == 6 && endY == startY - 2 && endX == startX);
         }
     }
+
+    bool eats(int startX, int startY, int endX, int endY) const override {
+        if(color == WHITE){
+            return (endX == startX + 1 && endY == startY + 1) || (endX == startX - 1 && endY == startY + 1);
+        }else{
+            return (endX == startX + 1 && endY == startY - 1) || (endX == startX - 1 && endY == startY - 1);
+        }
+    }
 };
 
 #endif

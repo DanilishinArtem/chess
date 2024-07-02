@@ -22,6 +22,8 @@ public:
 
     virtual bool isValidMove( int startX, int startY, int endX, int endY) const = 0;
 
+    virtual bool eats( int startX, int startY, int endX, int endY) const = 0;
+
     sf::Texture getTexture() const { return texture; }
 
 protected:

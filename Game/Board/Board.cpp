@@ -46,12 +46,24 @@ void Board::setPiece(int x, int y, Piece* piece){
 
 bool Board::movePiece(int startX, int startY, int endX, int endY){
     Piece* piece = getPiece(startX, startY);
-    // cout << static_cast<string>(piece->getName()) << " " << startX << " " << startY << " " << endX << " " << endY << endl;
-    // cout << "isValidMove: " << piece->isValidMove(startX, startY, endX, endY) << endl;
-    if(piece && piece->isValidMove(startX, startY, endX, endY)){
-        setPiece(endX, endY, piece);
-        setPiece(startX, startY, nullptr);
-        return true;
+    Piece* secondPiece = getPiece(endX, endY);
+    if(!secondPiece){
+        if(piece && piece->isValidMove(startX, startY, endX, endY)){
+            setPiece(endX, endY, piece);
+            setPiece(startX, startY, nullptr);
+            return true;
+        }
+    }else{
+        if(piece && piece->eats(startX, startY, endX, endY)){
+            if(piece->getColor() == WHITE){
+                scoreWhite++;
+            }else{
+                scoreBlack++;
+            }
+            setPiece(endX, endY, piece);
+            setPiece(startX, startY, nullptr);
+            return true;
+        }
     }
     return false;
 }

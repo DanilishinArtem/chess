@@ -22,6 +22,10 @@ public:
         int dy = abs(endY - startY);
         return (dx <= 1 && dy <= 1);
     }
+
+    bool eats(int startX, int startY, int endX, int endY) const override {
+        return isValidMove(startX, startY, endX, endY);
+    }
 };
 
 #endif

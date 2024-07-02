@@ -15,6 +15,16 @@
 const int Width = 800;
 const int Height = 800;
 
+enum class PieceValue {
+    KING = 0,
+    QUEEN = 1,
+    ROOK = 2,
+    BISHOP = 3,
+    KNIGHT = 4,
+    PAWN = 5
+};
+
+
 class Board {
 public:
     Board();
@@ -22,9 +32,13 @@ public:
     void setPiece(int x, int y, Piece* piece);
     bool movePiece(int startX, int startY, int endX, int endY);
     void display(sf::RenderWindow& window) const;
+    int getScoreWhite() const { return scoreWhite; }
+    int getScoreBlack() const { return scoreBlack; }
 
 private:
     vector<vector<Piece*>> board;
+    int scoreWhite = 0;
+    int scoreBlack = 0;
 };
 
 #endif

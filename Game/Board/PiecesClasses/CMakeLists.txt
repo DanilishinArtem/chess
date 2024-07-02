@@ -1,19 +1,15 @@
-# Переменная, содержащая список заголовочных файлов вашей библиотеки
-set(HEADERS
-    Piece.h
-    Pawn.h
-    Bishop.h
-    # Добавьте сюда все остальные заголовочные файлы вашей библиотеки
-)
+cmake_minimum_required(VERSION 3.0.0)
 
-# Добавляем библиотеку с заголовочными файлами
-add_library(PiecesClasses INTERFACE)
-target_sources(PiecesClasses INTERFACE ${HEADERS})
+project(PiecesClasses VERSION 0.1.0)
 
-set(IMAGE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/images)
+# Определение переменной с текущей директорией
+get_filename_component(CURRENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
 
-# Передаем эту переменную в код C++
-add_compile_definitions(IMAGE_DIR="${IMAGE_DIR}")
+# Добавление переменной в качестве определения компилятора для файлов C++
+add_compile_definitions(CURRENT_DIRECTORY="${CURRENT_DIR}")
 
-# Указываем, что этот путь будет использоваться как абсолютный
-target_include_directories(PiecesClasses INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
+# Добавление каталога с заголовочными файлами
+include_directories(${CURRENT_DIR})
+
+# Добавление каталога с библиотеками
+link_directories(${CURRENT_DIR})

@@ -21,6 +21,10 @@ public:
     bool isValidMove(int startX, int startY, int endX, int endY) const override {
         return (startX == endX || startY == endY);
     }
+
+    bool eats(int startX, int startY, int endX, int endY) const override {
+        return isValidMove(startX, startY, endX, endY);
+    }
 };
 
 #endif
