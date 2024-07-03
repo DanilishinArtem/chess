@@ -33,12 +33,14 @@ public:
     bool movePiece(int startX, int startY, int endX, int endY);
     void display(sf::RenderWindow& window) const;
     int getScoreWhite() const { return scoreWhite; }
+    void updateScoreWhite() { scoreWhite++; }
     int getScoreBlack() const { return scoreBlack; }
+    void updateScoreBlack() { scoreBlack++; }
 
 private:
     vector<vector<Piece*>> board;
-    int scoreWhite = 0;
-    int scoreBlack = 0;
+    int scoreWhite;
+    int scoreBlack;
 };
 
 #endif

@@ -10,6 +10,7 @@ public:
     Game();
     void start();
     sf::Vector2i toBoardCoordinates(sf::Vector2i pixelCoords);
+    void updateScoreText();
 
 private:
     Board board;
@@ -17,7 +18,6 @@ private:
     bool isCheckmate(Color color) const;
     sf::Font font;
     sf::Text scoreText;
-    void updateScoreText();
 };
 
 #endif

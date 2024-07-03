@@ -15,7 +15,7 @@ public:
     }
     string getName() const override { return color == WHITE ? "white_king" : "black_king"; }
 
-    string getTextureFile() const override { return color == WHITE ? "/home/adanilishin/chess/Game/Board/PiecesClasses/images/white_king.png" : "/home/adanilishin/chess/Game/Board/PiecesClasses/images/black_king.png"; }
+    string getTextureFile() const override { return color == WHITE ? "Game/Board/PiecesClasses/images/white_king.png" : "Game/Board/PiecesClasses/images/black_king.png"; }
 
     bool isValidMove(int startX, int startY, int endX, int endY) const override {
         int dx = abs(endX - startX);

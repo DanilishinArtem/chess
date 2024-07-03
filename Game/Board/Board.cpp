@@ -3,6 +3,8 @@
 #include <iomanip>
 
 Board::Board() : board(8, std::vector<Piece*>(8, nullptr)) {
+    scoreWhite = 0;
+    scoreBlack = 0;
     // initialize board
     for (int i = 0; i < 8; i++) {
         board[i][1] = new Pawn(WHITE);
@@ -45,23 +47,26 @@ void Board::setPiece(int x, int y, Piece* piece){
 }
 
 bool Board::movePiece(int startX, int startY, int endX, int endY){
+    if(startX == endX && startY == endY){
+        return false;
+    }
     Piece* piece = getPiece(startX, startY);
     Piece* secondPiece = getPiece(endX, endY);
     if(!secondPiece){
         if(piece && piece->isValidMove(startX, startY, endX, endY)){
-            setPiece(endX, endY, piece);
             setPiece(startX, startY, nullptr);
+            setPiece(endX, endY, piece);
             return true;
         }
     }else{
-        if(piece && piece->eats(startX, startY, endX, endY)){
+        if(piece && piece->eats(startX, startY, endX, endY) && (piece->getColor() != secondPiece->getColor())){
             if(piece->getColor() == WHITE){
-                scoreWhite++;
+                updateScoreWhite();
             }else{
-                scoreBlack++;
+                updateScoreBlack();
             }
-            setPiece(endX, endY, piece);
             setPiece(startX, startY, nullptr);
+            setPiece(endX, endY, piece);
             return true;
         }
     }

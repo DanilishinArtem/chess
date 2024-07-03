@@ -10,7 +10,8 @@ enum Color {WHITE, BLACK};
 
 class Piece {
 public:
-    Piece(Color color) : color(color) {}
+
+    Piece(Color color) : color(color) {} // , currentPath(CURRENT_SOURCE_DIR)
 
     virtual ~Piece() {}
 
@@ -29,6 +30,7 @@ public:
 protected:
     Color color;
     sf::Texture texture;
+    // std::string currentPath;
 };
 
 #endif

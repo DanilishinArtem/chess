@@ -2,16 +2,16 @@
 #include <iostream>
 
 
-Game::Game() : currentPlayer(WHITE) {
+Game::Game() : currentPlayer(WHITE), board(Board()) {
+    font.loadFromFile("Game/fonts/ArialRegular.ttf");
     scoreText.setFont(font);
-    scoreText.setCharacterSize(24);
-    scoreText.setFillColor(sf::Color::White);
-    updateScoreText();
+    scoreText.setCharacterSize(10);
+    scoreText.setFillColor(sf::Color::Black);
+    scoreText.setPosition(0, 0);
 }
 
 void Game::updateScoreText() {
     scoreText.setString("White: " + std::to_string(board.getScoreWhite()) + " - Black:" + std::to_string(board.getScoreBlack()));
-    scoreText.setPosition(10, 10);
 }
 
 sf::Vector2i Game::toBoardCoordinates(sf::Vector2i pixelCoords){
@@ -21,8 +21,6 @@ sf::Vector2i Game::toBoardCoordinates(sf::Vector2i pixelCoords){
 void Game::start() {
     // Creating the window
     sf::RenderWindow window(sf::VideoMode(Width, Height), "Chess Game");
-    // Creating the board
-    Board board;
 
     Piece* selectedPiece = nullptr;
     sf::Vector2i selectedPieceOriginalPos;
@@ -70,14 +68,10 @@ void Game::start() {
                 }
             }
         }
-        // updateScoreText();
         window.clear();
         board.display(window);
-        // window.draw(scoreText);
+        window.draw(scoreText);
+        Game::updateScoreText();
         window.display();
     }
 }
-
-
-// так, допустим у меня все выводится правильно сейчас на доске
-// давай теперь добавим функционал в шахматы, чтобы игрок мог двигать фигуры курсором мыши
