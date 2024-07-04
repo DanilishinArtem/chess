@@ -27,10 +27,12 @@ public:
 
     sf::Texture getTexture() const { return texture; }
 
+    virtual int getValue() const { return Value; }
+
 protected:
     Color color;
     sf::Texture texture;
-    // std::string currentPath;
+    int Value;
 };
 
 #endif

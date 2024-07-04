@@ -7,6 +7,7 @@
 class King : public Piece {
 public:
     King(Color color) : Piece(color) {
+        Value = 1000;
         bool loaded = texture.loadFromFile(getTextureFile());
         if(!loaded) {
             cout << "Error loading texture" << endl;
@@ -26,6 +27,8 @@ public:
     bool eats(int startX, int startY, int endX, int endY) const override {
         return isValidMove(startX, startY, endX, endY);
     }
+
+    int getValue() const override { return Value; }
 };
 
 #endif

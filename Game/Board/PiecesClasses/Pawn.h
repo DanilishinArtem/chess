@@ -8,6 +8,7 @@
 class Pawn : public Piece {
 public:
     Pawn(Color color) : Piece(color) {
+        Value = 1;
         bool loaded = texture.loadFromFile(getTextureFile());
         if(!loaded) {
             cout << "Error loading texture" << endl;
@@ -34,6 +35,8 @@ public:
             return (endX == startX + 1 && endY == startY - 1) || (endX == startX - 1 && endY == startY - 1);
         }
     }
+
+    int getValue() const override { return Value; }
 };
 
 #endif

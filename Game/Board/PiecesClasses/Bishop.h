@@ -11,6 +11,7 @@
 class Bishop : public Piece {
 public:
     Bishop(Color color) : Piece(color) {
+        Value = 3;
         bool loaded = texture.loadFromFile(getTextureFile());
         if(!loaded) {
             cout << "Error loading texture" << endl;
@@ -30,6 +31,8 @@ public:
     bool eats(int startX, int startY, int endX, int endY) const override {
         return isValidMove(startX, startY, endX, endY);
     }
+
+    int getValue() const override { return Value; }
 };
 
 #endif

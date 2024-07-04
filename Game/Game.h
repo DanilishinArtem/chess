@@ -3,6 +3,7 @@
 #define GAME_H
 
 #include "Board/Board.h"
+#include "pc.h"
 #include <SFML/Graphics.hpp>
 
 class Game {
@@ -10,7 +11,7 @@ public:
     Game();
     void start();
     sf::Vector2i toBoardCoordinates(sf::Vector2i pixelCoords);
-    void updateScoreText();
+    void updateText();
 
 private:
     Board board;
@@ -18,6 +19,11 @@ private:
     bool isCheckmate(Color color) const;
     sf::Font font;
     sf::Text scoreText;
+    sf::Text currentPlayerText;
 };
+
+
+
+
 
 #endif

@@ -1,29 +1,36 @@
-#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <map>
+using namespace std;
+
+enum class PieceValue {
+    KING = 999,
+    QUEEN = 9,
+    ROOK = 5,
+    BISHOP = 3,
+    KNIGHT = 3,
+    PAWN = 1
+};
+
+
+
+map<string, int> ScorePiece = {
+    {"black_bishop" , 3},
+    {"white_bishop" , 3},
+    {"white_king" , 1000},
+    {"black_king" , 1000},
+    {"white_knight" , 3},
+    {"black_knight" , 3},
+    {"black_pawn" , 1},
+    {"white_pawn" , 1},
+    {"white_queen" , 9},
+    {"black_queen" , 9},
+    {"white_rook" , 5},
+    {"black_rook", 5}
+};
+
 
 int main() {
-    // Создаем окно
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML works!");
-
-    // Создаем круг
-    sf::CircleShape shape(50);
-    shape.setFillColor(sf::Color::Red);
-
-    // Основной цикл приложения
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        // Очищаем окно
-        window.clear();
-        // Рисуем круг
-        window.draw(shape);
-        // Отображаем содержимое окна на экран
-        window.display();
-    }
-
+    cout << ScorePiece["black_bishop"] << endl;
     return 0;
 }
 

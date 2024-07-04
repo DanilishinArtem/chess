@@ -14,15 +14,7 @@
 
 const int Width = 800;
 const int Height = 800;
-
-enum class PieceValue {
-    KING = 0,
-    QUEEN = 1,
-    ROOK = 2,
-    BISHOP = 3,
-    KNIGHT = 4,
-    PAWN = 5
-};
+const int Gap = 150;
 
 
 class Board {
@@ -33,9 +25,9 @@ public:
     bool movePiece(int startX, int startY, int endX, int endY);
     void display(sf::RenderWindow& window) const;
     int getScoreWhite() const { return scoreWhite; }
-    void updateScoreWhite() { scoreWhite++; }
+    void updateScoreWhite(const Piece& piece) { scoreWhite += piece.getValue(); }
     int getScoreBlack() const { return scoreBlack; }
-    void updateScoreBlack() { scoreBlack++; }
+    void updateScoreBlack(const Piece& piece) { scoreBlack += piece.getValue(); }
 
 private:
     vector<vector<Piece*>> board;

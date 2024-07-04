@@ -61,9 +61,9 @@ bool Board::movePiece(int startX, int startY, int endX, int endY){
     }else{
         if(piece && piece->eats(startX, startY, endX, endY) && (piece->getColor() != secondPiece->getColor())){
             if(piece->getColor() == WHITE){
-                updateScoreWhite();
+                updateScoreWhite(*secondPiece);
             }else{
-                updateScoreBlack();
+                updateScoreBlack(*secondPiece);
             }
             setPiece(startX, startY, nullptr);
             setPiece(endX, endY, piece);
@@ -74,10 +74,14 @@ bool Board::movePiece(int startX, int startY, int endX, int endY){
 }
 
 void Board::display(sf::RenderWindow& window) const {
-    const int cellSize = 100;
+    const int cellSize = Width / 8;
     const int boardSize = 8;
-
+    sf::RectangleShape mainCell(sf::Vector2f(Width, Height + Gap));
+    mainCell.setFillColor(sf::Color::White);
+    mainCell.setPosition(0, 0);
+    window.draw(mainCell);
     sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));
+
 
     for(int y = boardSize; y >= 0; y--){
         cout << string(2, ' ');
