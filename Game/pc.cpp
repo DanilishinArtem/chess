@@ -1,17 +1,18 @@
 #include "pc.h"
 
-pair<pair<int, int>, pair<int, int>> Pc::Move(const Board& board) {
-    // TODO: implement move logic
-    pair<pair<int, int>, pair<int, int>> move;
-    // move.first.first = startX;
-    // move.first.second = startY;
-    // move.second.first = endX;
-    // move.second.second = endY;
-    move.first.first = 0;
-    move.first.second = 6;
-    move.second.first = 0;
-    move.second.second = 4;
-    return move;
+pair<pair<int, int>, pair<int, int>> Pc::move(const Board& board, sf::RenderWindow& window) {
+    sf::Event event;
+    pair<pair<int, int>, pair<int, int>> movement_Pc;
+    while(window.pollEvent(event)){
+        if(event.type == sf::Event::Closed){
+            window.close();
+        }
+        movement_Pc.first.first = 0;
+        movement_Pc.first.second = 6;
+        movement_Pc.second.first = 0;
+        movement_Pc.second.second = 4;
+    }
+    return movement_Pc;
 }
 
 

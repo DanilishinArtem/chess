@@ -8,7 +8,7 @@ project(Game VERSION 0.1.0)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/fonts DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-set(SOURCE_LIB Game.cpp pc.cpp)
+set(SOURCE_LIB Game.cpp pc.cpp player.cpp)
 
 add_subdirectory(Board)
 

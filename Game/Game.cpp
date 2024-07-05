@@ -24,10 +24,20 @@ sf::Vector2i Game::toBoardCoordinates(sf::Vector2i pixelCoords){
     return sf::Vector2i(pixelCoords.x / 100, pixelCoords.y / 100);
 }
 
+void change_current_player(Color& current_player){
+    if(current_player == WHITE){
+        current_player = BLACK;
+    }else{
+        current_player = WHITE;
+    }
+}
+
 void Game::start() {
-    // Creating the pc player
-    Pc* pc = new Pc();
-    pair<pair<int, int>, pair<int, int>> move;
+    Pc* first_player = new Pc();
+    // Player* first_player = new Player();
+    Player* second_player = new Player();
+    pair<pair<int, int>, pair<int, int>> movement_PC;
+    pair<pair<int, int>, pair<int, int>> movement_Player;
     // Creating the window
     sf::RenderWindow window(sf::VideoMode(Width, Height + Gap), "Chess Game");
 
@@ -36,58 +46,20 @@ void Game::start() {
     bool valid;
     // Basic cycle
     while(window.isOpen()){
-        // Movement logic of the PC (computer plays for black)
         if (currentPlayer == BLACK) {
-            move = pc->Move(board);
-            valid = board.movePiece(move.first.first, move.first.second, move.second.first, move.second.second);
+            valid = false;
+            movement_PC = first_player->move(board, window);
+            // movement_PC = second_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
+            valid = board.movePiece(movement_PC.first.first, movement_PC.first.second, movement_PC.second.first, movement_PC.second.second);
             if(valid){
-                if(currentPlayer == WHITE){
-                    currentPlayer = BLACK;
-                }else{
-                    currentPlayer = WHITE;
-                }
-            }
-        // Movement logic of the player (player plays for white)
+                change_current_player(currentPlayer);
+            }                
         }else{
-            sf::Event event;
-            while(window.pollEvent(event)){
-                if(event.type == sf::Event::Closed){
-                    window.close();
-                }
-                // Basic cycle of mouse events
-                
-                // Logic of mouse pressed event
-                if(event.type == sf::Event::MouseButtonPressed){
-                    if(event.mouseButton.button == sf::Mouse::Left){
-                        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                        sf::Vector2i boardPos = toBoardCoordinates(mousePos);
-
-                        selectedPiece = board.getPiece(boardPos.x, boardPos.y);
-                        if(selectedPiece && selectedPiece->getColor() == currentPlayer){
-                            selectedPieceOriginalPos = boardPos;
-                        }else{
-                            selectedPiece = nullptr;
-                        }
-                    }
-                }
-
-                // Logic of mouse released event
-                if(event.type == sf::Event::MouseButtonReleased){
-                    if(event.mouseButton.button == sf::Mouse::Left){
-                        if(selectedPiece){
-                            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                            sf::Vector2i boardPos = toBoardCoordinates(mousePos);
-                            valid = board.movePiece(selectedPieceOriginalPos.x, selectedPieceOriginalPos.y, boardPos.x, boardPos.y);
-                            if(valid){
-                                if(currentPlayer == WHITE){
-                                    currentPlayer = BLACK;
-                                }else{
-                                    currentPlayer = WHITE;
-                                }
-                            }
-                        }
-                    }
-                }
+            valid = false;
+            movement_Player = second_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
+            valid = board.movePiece(movement_Player.first.first, movement_Player.first.second, movement_Player.second.first, movement_Player.second.second);
+            if(valid){
+                change_current_player(currentPlayer);
             }
         }
         window.clear();

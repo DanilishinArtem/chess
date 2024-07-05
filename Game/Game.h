@@ -4,6 +4,7 @@
 
 #include "Board/Board.h"
 #include "pc.h"
+#include "player.h"
 #include <SFML/Graphics.hpp>
 
 class Game {
