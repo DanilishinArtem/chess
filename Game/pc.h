@@ -4,7 +4,7 @@
 
 class Pc {
 public:
-    pair<pair<int, int>, pair<int, int>> move(const Board& board, sf::RenderWindow& window);
+    pair<pair<int, int>, pair<int, int>> move(const Board& board, sf::RenderWindow& window, const Color& currentPlayer, Piece*& selectedPiece, sf::Vector2i& selectedPieceOriginalPos);
 };
 
 #endif

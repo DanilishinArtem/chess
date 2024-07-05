@@ -1,6 +1,6 @@
 #include "pc.h"
 
-pair<pair<int, int>, pair<int, int>> Pc::move(const Board& board, sf::RenderWindow& window) {
+pair<pair<int, int>, pair<int, int>> Pc::move(const Board& board, sf::RenderWindow& window, const Color& currentPlayer, Piece*& selectedPiece, sf::Vector2i& selectedPieceOriginalPos) {
     sf::Event event;
     pair<pair<int, int>, pair<int, int>> movement_Pc;
     while(window.pollEvent(event)){

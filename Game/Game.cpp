@@ -24,7 +24,7 @@ sf::Vector2i Game::toBoardCoordinates(sf::Vector2i pixelCoords){
     return sf::Vector2i(pixelCoords.x / 100, pixelCoords.y / 100);
 }
 
-void change_current_player(Color& current_player){
+void Game::change_current_player(Color& current_player){
     if(current_player == WHITE){
         current_player = BLACK;
     }else{
@@ -33,8 +33,8 @@ void change_current_player(Color& current_player){
 }
 
 void Game::start() {
-    Pc* first_player = new Pc();
-    // Player* first_player = new Player();
+    // Pc* first_player = new Pc();
+    Player* first_player = new Player();
     Player* second_player = new Player();
     pair<pair<int, int>, pair<int, int>> movement_PC;
     pair<pair<int, int>, pair<int, int>> movement_Player;
@@ -48,18 +48,17 @@ void Game::start() {
     while(window.isOpen()){
         if (currentPlayer == BLACK) {
             valid = false;
-            movement_PC = first_player->move(board, window);
-            // movement_PC = second_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
+            movement_PC = first_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
             valid = board.movePiece(movement_PC.first.first, movement_PC.first.second, movement_PC.second.first, movement_PC.second.second);
             if(valid){
-                change_current_player(currentPlayer);
+                Game::change_current_player(currentPlayer);
             }                
         }else{
             valid = false;
             movement_Player = second_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
             valid = board.movePiece(movement_Player.first.first, movement_Player.first.second, movement_Player.second.first, movement_Player.second.second);
             if(valid){
-                change_current_player(currentPlayer);
+                Game::change_current_player(currentPlayer);
             }
         }
         window.clear();
