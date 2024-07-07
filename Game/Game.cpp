@@ -77,8 +77,8 @@ void Game::start() {
     // Pc* first_player = new Pc();
     Player* white_player = new Player();
     Player* black_player = new Player();
-    pair<pair<int, int>, pair<int, int>> movement_white;
-    pair<pair<int, int>, pair<int, int>> movement_black;
+    Move movement_white;
+    Move movement_black;
     sf::RenderWindow window(sf::VideoMode(Width, Height + Gap), "Chess Game");
 
     Piece* selectedPiece = nullptr;
@@ -97,7 +97,7 @@ void Game::start() {
             valid = false;
             movement_white = white_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
             // cout << "movement_white: " << movement_white.first.first << ", " << movement_white.first.second << ", " << movement_white.second.first << ", " << movement_white.second.second << endl;
-            valid = board.movePiece(movement_white.first.first, movement_white.first.second, movement_white.second.first, movement_white.second.second);
+            valid = board.movePiece(movement_white.startX, movement_white.startY, movement_white.endX, movement_white.endY);
             if(valid){
                 Game::change_current_player(currentPlayer);
             }                
@@ -111,7 +111,7 @@ void Game::start() {
             valid = false;
             movement_black = black_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
             // cout << "movement_white: " << movement_black.first.first << ", " << movement_black.first.second << ", " << movement_black.second.first << ", " << movement_black.second.second << endl;
-            valid = board.movePiece(movement_black.first.first, movement_black.first.second, movement_black.second.first, movement_black.second.second);
+            valid = board.movePiece(movement_black.startX, movement_black.startY, movement_black.endX, movement_black.endY);
             if(valid){
                 Game::change_current_player(currentPlayer);
             }

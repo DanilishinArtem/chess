@@ -6,6 +6,7 @@
 #include "pc.h"
 #include "player.h"
 #include <SFML/Graphics.hpp>
+#include "Move.h"
 
 class Game {
 public:

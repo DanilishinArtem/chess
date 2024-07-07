@@ -1,8 +1,8 @@
 #include "player.h"
 
-pair<pair<int, int>, pair<int, int>> Player::move(const Board& board, sf::RenderWindow& window, const Color& currentPlayer, Piece*& selectedPiece, sf::Vector2i& selectedPieceOriginalPos) {
+Move Player::move(const Board& board, sf::RenderWindow& window, const Color& currentPlayer, Piece*& selectedPiece, sf::Vector2i& selectedPieceOriginalPos) {
     sf::Event event;
-    pair<pair<int, int>, pair<int, int>> movement_Player = {{0, 0}, {0, 0}};
+    Move movement_Player = {0, 0, 0, 0};
     while(window.pollEvent(event)){
         if(event.type == sf::Event::Closed){
             window.close();
@@ -24,7 +24,7 @@ pair<pair<int, int>, pair<int, int>> Player::move(const Board& board, sf::Render
             if(event.mouseButton.button == sf::Mouse::Left){
                 if(selectedPiece){
                     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                    movement_Player = make_pair(make_pair(selectedPieceOriginalPos.x, selectedPieceOriginalPos.y), make_pair(mousePos.x / (Width / 8), mousePos.y / (Height / 8)));
+                    movement_Player = {selectedPieceOriginalPos.x, selectedPieceOriginalPos.y, mousePos.x / (Width / 8), mousePos.y / (Height / 8)};
                 }
             }
         }
