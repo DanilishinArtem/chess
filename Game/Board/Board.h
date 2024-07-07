@@ -11,6 +11,7 @@
 #include "PiecesClasses/Bishop.h"
 #include "PiecesClasses/Knight.h"
 #include "PiecesClasses/Pawn.h"
+#include "../Move.h"
 
 #define SIGN(x) ((x) > 0 ? 1 : ((x) < 0 ? -1 : 0))
 
@@ -31,11 +32,14 @@ public:
     int getScoreBlack() const { return scoreBlack; }
     void updateScoreBlack(const Piece& piece) { scoreBlack += piece.getValue(); }
     bool validTrace(int startX, int startY, int endX, int endY) const;
+    bool isCheck(Color color) const;
+    bool isCheckmate(Color color) const;
 
 private:
     vector<vector<Piece*>> board;
     int scoreWhite;
     int scoreBlack;
+    vector<Move> getAllPossibleMoves(Color color) const;
 };
 
 #endif

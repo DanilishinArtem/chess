@@ -46,6 +46,62 @@ void Board::setPiece(int x, int y, Piece* piece){
     }
 }
 
+bool Board::isCheck(Color color) const {
+    pair<int, int> KingPosition; 
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(Board::getPiece(i, j) != nullptr && Board::getPiece(i, j)->getColor() == color && (Board::getPiece(i, j)->getName() == "white_king" || Board::getPiece(i, j)->getName() == "black_king")){
+                KingPosition = {i, j};
+                break;
+            }
+        }
+    }
+
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8; j++){
+            if(Board::getPiece(i, j) != nullptr && Board::getPiece(i, j)->getColor() != color){
+                if(Board::validTrace(i, j, KingPosition.first, KingPosition.second)){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+vector<Move> Board::getAllPossibleMoves(Color color) const {
+    vector<Move> moves;
+    for(int startX = 0; startX < 8; startX++){
+        for(int startY = 0; startY < 8; startY++){
+            Piece* piece = Board::getPiece(startX, startY);
+            if(piece && piece->getColor() == color){
+                // check all possible terminate positions
+                for(int endX = 0; endX < 8; endX++){
+                    for(int endY = 0; endY < 8; endY++){
+                        if(Board::validTrace(startX, startY, endX, endY)){
+                            moves.push_back({startX, startY, endX, endY});
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return moves;
+}
+
+bool Board::isCheckmate(Color color) const {
+    vector<Move> moves = Board::getAllPossibleMoves(color);
+    for(const Move& move : moves){
+        Board tempBoard = *this;
+        if(tempBoard.movePiece(move.startX, move.startY, move.endX, move.endY)){
+            if(!tempBoard.isCheck(color)){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 bool Board::validTrace(int startX, int startY, int endX, int endY) const {
     if(Board::getPiece(startX, startY)->getName() == "white_knight" || Board::getPiece(startX, startY)->getName() == "black_knight"){
         if(Board::getPiece(startX, startY)->isValidMove(startX, startY, endX, endY)){

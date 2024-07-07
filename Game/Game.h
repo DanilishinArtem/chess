@@ -19,9 +19,6 @@ public:
 private:
     Board board;
     Color currentPlayer;
-    bool isCheckmate(Color color) const;
-    bool isCheck(Color color) const;
-    vector<pair<Piece*, sf::Vector2i>> getAllPossibleMoves(Color color) const;
     sf::Font font;
     sf::Text scoreText;
     sf::Text fontStatus;
