@@ -21,7 +21,7 @@ coordinates window_class::getPositionInfo() const {
 }
 
 void window_class::displayBasicInfo(int scoreWhite, int scoreBlack, Color currentPlayer) {
-    font.loadFromFile("/home/adanilishin/chess/test/ArialRegular.ttf");
+    font.loadFromFile("Game/fonts/ArialRegular.ttf");
     title.setFont(font);
     title.setCharacterSize(20);
     title.setFillColor(sf::Color::White);
