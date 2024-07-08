@@ -17,7 +17,7 @@
 
 const int Width = 800;
 const int Height = 800;
-const int Gap = 150;
+const int Gap = 300;
 
 
 class Board {
@@ -26,7 +26,6 @@ public:
     Piece* getPiece(int x, int y) const;
     void setPiece(int x, int y, Piece* piece);
     bool movePiece(int startX, int startY, int endX, int endY);
-    void display(sf::RenderWindow& window) const;
     int getScoreWhite() const { return scoreWhite; }
     void updateScoreWhite(const Piece& piece) { scoreWhite += piece.getValue(); }
     int getScoreBlack() const { return scoreBlack; }

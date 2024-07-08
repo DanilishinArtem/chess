@@ -4,6 +4,7 @@
 #include "Board/Board.h"
 #include "Game.h"
 #include "Move.h"
+#include "window.h"
 
 class Pc {
 public:

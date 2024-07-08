@@ -7,14 +7,13 @@
 #include "player.h"
 #include <SFML/Graphics.hpp>
 #include "Move.h"
+#include "window.h"
 
 class Game {
 public:
     Game();
     void start();
-    sf::Vector2i toBoardCoordinates(sf::Vector2i pixelCoords);
     void change_current_player(Color& color);
-    void updateText(string textStatus);
 
 private:
     Board board;
