@@ -1,7 +1,7 @@
 #include "pc.h"
 
 
-Move Pc::move(const Board& board, sf::RenderWindow& window, const Color& currentPlayer, Piece*& selectedPiece, sf::Vector2i& selectedPieceOriginalPos) {
+Move Pc::move(const Board& board, window_class& window, const Color& currentPlayer, Piece*& selectedPiece, sf::Vector2i& selectedPieceOriginalPos) {
     sf::Event event;
     Move movement_Pc;
     while(window.pollEvent(event)){

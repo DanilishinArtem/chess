@@ -66,6 +66,8 @@ void Game::start() {
         //     Game::updateText("No check");
         // }
         window.clear();
+        // TODO: add status about check and checkmate
+        // TODO: relalize choice of pieces when pown reachs the end of the board
         window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer);
     }
 }
