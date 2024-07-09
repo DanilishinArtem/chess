@@ -24,50 +24,61 @@ void Game::start() {
     sf::Vector2i selectedPieceOriginalPos;
     bool isCheck_white = false;
     bool isCheck_black = false;
+    bool isCheckmateWhite = false;
+    bool isCheckmateBlack = false;
     bool valid;
     while(window.isOpen()){
+
         if (currentPlayer == WHITE) {
             isCheck_white = board.isCheck(WHITE);
             if(isCheck_white){
-                if(board.isCheckmate(WHITE)){
-                    cout << "WHITE lose!" << endl;
-                    break;
+                isCheckmateWhite = board.isCheckmate(WHITE);
+                if(isCheckmateWhite){
+                    sf::Event event;
+                    while(window.pollEvent(event)){
+                        if(event.type == sf::Event::Closed){
+                            window.close();
+                        }
+                    }
+                }
+            }
+            if(!isCheckmateWhite && !isCheckmateBlack){
+                valid = false;
+                movement_white = white_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
+                valid = board.movePiece(movement_white.startX, movement_white.startY, movement_white.endX, movement_white.endY);
+                if(valid){
+                    Game::change_current_player(currentPlayer);
                 }                
             }
-            valid = false;
-            movement_white = white_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
-            valid = board.movePiece(movement_white.startX, movement_white.startY, movement_white.endX, movement_white.endY);
-            if(valid){
-                Game::change_current_player(currentPlayer);
-            }                
         }else{
             isCheck_black = board.isCheck(BLACK);
             if(isCheck_black){
-                if(board.isCheckmate(BLACK)){
-                    cout << "BLACK lose!" << endl;
-                    break;
+                isCheckmateBlack = board.isCheckmate(BLACK);
+                if(isCheckmateBlack){
+                    sf::Event event;
+                    while(window.pollEvent(event)){
+                        if(event.type == sf::Event::Closed){
+                            window.close();
+                        }
+                    }
                 }
             }
-            valid = false;
-            movement_black = black_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
-            valid = board.movePiece(movement_black.startX, movement_black.startY, movement_black.endX, movement_black.endY);
-            if(valid){
-                Game::change_current_player(currentPlayer);
+            if(!isCheckmateWhite && !isCheckmateBlack){
+                valid = false;
+                movement_black = black_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
+                valid = board.movePiece(movement_black.startX, movement_black.startY, movement_black.endX, movement_black.endY);
+                if(valid){
+                    Game::change_current_player(currentPlayer);
+                }
             }
         }
-        
-        // if(isCheck_white == true && isCheck_black == false){
-        //     Game::updateText("Check for white player");
-        // }
-        // if(isCheck_black == true && isCheck_white == false){
-        //     Game::updateText("Check for black player");
-        // }
-        // if(isCheck_white == false && isCheck_black == false){
-        //     Game::updateText("No check");
-        // }
         window.clear();
         // TODO: add status about check and checkmate
         // TODO: relalize choice of pieces when pown reachs the end of the board
-        window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer);
+        if(currentPlayer == WHITE){
+            window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_white, isCheckmateWhite);
+        }else{
+            window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_black, isCheckmateBlack);
+        }
     }
 }

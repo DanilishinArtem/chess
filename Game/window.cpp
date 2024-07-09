@@ -20,7 +20,7 @@ coordinates window_class::getPositionInfo() const {
     return coordinates{-1, -1};
 }
 
-void window_class::displayBasicInfo(int scoreWhite, int scoreBlack, Color currentPlayer) {
+void window_class::displayBasicInfo(int scoreWhite, int scoreBlack, Color currentPlayer, bool check, bool checkMate) {
     font.loadFromFile("Game/fonts/ArialRegular.ttf");
     title.setFont(font);
     title.setCharacterSize(20);
@@ -40,9 +40,32 @@ void window_class::displayBasicInfo(int scoreWhite, int scoreBlack, Color curren
     currectPlayer.setPosition(WidthBoard_ + 10, 60);
     currectPlayer.setString("Current player: " + static_cast<string>((currentPlayer == WHITE ? "White" : "Black")));
 
+    checkMateStatus.setFont(font);
+    checkMateStatus.setCharacterSize(20);
+    checkMateStatus.setFillColor(sf::Color::White);
+    checkMateStatus.setPosition(WidthBoard_ + 10, 90);
+    string temp = "";
+    if(currentPlayer == WHITE){
+        if(check){
+            temp = "Check for White player";
+        }
+        if(checkMate){
+            temp = "White player lost";
+        }
+    }else{
+        if(check){
+            temp = "Check for Black player";
+        }
+        if(checkMate){
+            temp = "Black player lost";
+        }
+    }
+    checkMateStatus.setString(temp);
+
     windowBoard.draw(scoreText);
     windowBoard.draw(title);
     windowBoard.draw(currectPlayer);
+    windowBoard.draw(checkMateStatus);
 }
 
 void window_class::displayLine() {
@@ -91,8 +114,8 @@ void window_class::displayBoard(const Board& board) {
     }
 }
 
-void window_class::display(int scoreWhite, int scoreBlack, const Board& board, Color currentPlayer) {
-    displayBasicInfo(scoreWhite, scoreBlack, currentPlayer);
+void window_class::display(int scoreWhite, int scoreBlack, const Board& board, Color currentPlayer, bool check, bool checkMate) {
+    displayBasicInfo(scoreWhite, scoreBlack, currentPlayer, check, checkMate);
     displayLine();
     displayBoard(board);
     windowBoard.display();
