@@ -57,7 +57,6 @@ void Game::start() {
             }
         }
         window.clear();
-        // TODO: relalize choice of pieces when pown reachs the end of the board
         if(currentPlayer == WHITE){
             window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_white, isCheckmateWhite);
         }else{
@@ -74,3 +73,9 @@ void Game::start() {
         }
     }
 }
+
+
+
+// TODO: relalize choice of pieces when pown reachs the end of the board
+// TODO: implement capturing on the pass
+// TODO: implement castling
