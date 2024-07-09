@@ -5,6 +5,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "Board/Board.h"
+#include "Board/PiecesClasses/Bishop.h"
+#include "Board/PiecesClasses/Knight.h"
+#include "Board/PiecesClasses/Queen.h"
+#include "Board/PiecesClasses/Rook.h"
 
 using namespace std;
 
@@ -30,6 +34,8 @@ public:
     void displayLine();
 
     void displayBoard(const Board& board);
+
+    void displayChoosePiece(const Board& board, Color currentPlayer);
 
     void display(int scoreWhite, int scoreBlack, const Board& board, Color currentPlayer, bool check, bool checkMate);
 

@@ -28,7 +28,6 @@ void Game::start() {
     bool isCheckmateBlack = false;
     bool valid;
     while(window.isOpen()){
-
         if (currentPlayer == WHITE) {
             isCheck_white = board.isCheck(WHITE);
             if(isCheck_white){
@@ -39,8 +38,14 @@ void Game::start() {
                 movement_white = white_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
                 valid = board.movePiece(movement_white.startX, movement_white.startY, movement_white.endX, movement_white.endY);
                 if(valid){
+                    for(int i = 0; i < 8; i++){
+                        if(board.getPiece(i, 7) != nullptr && board.getPiece(i, 7)->getName() == "white_pawn"){
+                            cout <<"Choose piece for White player"; 
+                            window.displayChoosePiece(board, WHITE);
+                        }
+                    }
                     Game::change_current_player(currentPlayer);
-                }                
+                }
             }
         }else{
             isCheck_black = board.isCheck(BLACK);
@@ -52,10 +57,19 @@ void Game::start() {
                 movement_black = black_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
                 valid = board.movePiece(movement_black.startX, movement_black.startY, movement_black.endX, movement_black.endY);
                 if(valid){
+                    for(int i = 0; i < 8; i++){
+                        if(board.getPiece(i, 0) != nullptr && board.getPiece(i, 0)->getName() == "black_pawn"){
+                            cout <<"Choose piece for Black player"; 
+                            window.displayChoosePiece(board, BLACK);
+                        }
+                    }
                     Game::change_current_player(currentPlayer);
                 }
             }
         }
+        // if(board.getPiece(6, 7) != nullptr){
+        //     cout << "position (6, 7): " << board.getPiece(6, 7)->getName() << endl;
+        // }
         window.clear();
         if(currentPlayer == WHITE){
             window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_white, isCheckmateWhite);

@@ -114,6 +114,26 @@ void window_class::displayBoard(const Board& board) {
     }
 }
 
+void window_class::displayChoosePiece(const Board& board, Color currentPlayer){
+    font.loadFromFile("Game/fonts/ArialRegular.ttf");
+    choosePiece.setFont(font);
+    choosePiece.setCharacterSize(20);
+    choosePiece.setFillColor(sf::Color::White);
+    choosePiece.setPosition(WidthBoard_ + 10, HeightBoard_ / 2 - 30);
+    string temp = "";
+    if(currentPlayer == WHITE){
+        // cout <<"Choose piece for White player"; 
+        temp = "Choose piece for White player";
+    }else{
+        // cout <<"Choose piece for Black player"; 
+        temp = "Choose piece for Black player";
+    }
+    choosePiece.setString(temp);
+    windowBoard.draw(choosePiece);
+
+
+}
+
 void window_class::display(int scoreWhite, int scoreBlack, const Board& board, Color currentPlayer, bool check, bool checkMate) {
     displayBasicInfo(scoreWhite, scoreBlack, currentPlayer, check, checkMate);
     displayLine();
