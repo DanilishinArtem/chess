@@ -33,14 +33,6 @@ void Game::start() {
             isCheck_white = board.isCheck(WHITE);
             if(isCheck_white){
                 isCheckmateWhite = board.isCheckmate(WHITE);
-                if(isCheckmateWhite){
-                    sf::Event event;
-                    while(window.pollEvent(event)){
-                        if(event.type == sf::Event::Closed){
-                            window.close();
-                        }
-                    }
-                }
             }
             if(!isCheckmateWhite && !isCheckmateBlack){
                 valid = false;
@@ -54,14 +46,6 @@ void Game::start() {
             isCheck_black = board.isCheck(BLACK);
             if(isCheck_black){
                 isCheckmateBlack = board.isCheckmate(BLACK);
-                if(isCheckmateBlack){
-                    sf::Event event;
-                    while(window.pollEvent(event)){
-                        if(event.type == sf::Event::Closed){
-                            window.close();
-                        }
-                    }
-                }
             }
             if(!isCheckmateWhite && !isCheckmateBlack){
                 valid = false;
@@ -73,12 +57,20 @@ void Game::start() {
             }
         }
         window.clear();
-        // TODO: add status about check and checkmate
         // TODO: relalize choice of pieces when pown reachs the end of the board
         if(currentPlayer == WHITE){
             window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_white, isCheckmateWhite);
         }else{
             window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_black, isCheckmateBlack);
+        }
+
+        if(isCheckmateWhite || isCheckmateBlack){
+            sf::Event event;
+            while(window.pollEvent(event)){
+                if(event.type == sf::Event::Closed){
+                    window.close();
+                }
+            }
         }
     }
 }
