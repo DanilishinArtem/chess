@@ -6,6 +6,7 @@ Move Player::move(const Board& board, window_class& window, const Color& current
     while(window.pollEvent(event)){
         if(event.type == sf::Event::Closed){
             window.close();
+            exit;
         }
         if(event.type == sf::Event::MouseButtonPressed){
             if(event.mouseButton.button == sf::Mouse::Left){
@@ -30,6 +31,28 @@ Move Player::move(const Board& board, window_class& window, const Color& current
         }
     }
     return movement_Player;    
+}
+
+string Player::makeChoice(window_class& window){
+    sf::Event event;
+    while(window.pollEvent(event)){
+        if(event.type == sf::Event::Closed){
+            window.close();
+            exit;
+        }
+    }
+    if(event.type == sf::Event::MouseButtonPressed){
+        if(event.mouseButton.button == sf::Mouse::Left){
+            coordinates mousePos = window.getPositionInfo();
+            if(mousePos.x != -1 && mousePos.y != -1){
+                string new_Piece = window.get_choosePiece(mousePos.x, mousePos.y);
+                if(new_Piece != ""){
+                    return new_Piece;
+                }
+            }
+        }
+    }
+    return "";
 }
 
 

@@ -12,6 +12,25 @@ void Game::change_current_player(Color& current_player){
     }
 }
 
+bool Game::choosePiece(window_class& window, const Board& board, Color& currentPlayer){
+    string name = "";
+    int k = 0;
+    for(int i = 0; i < 8; i++){
+        if(currentPlayer == WHITE){
+            k = 7;
+            name = "white_pawn";
+        }else{
+            k = 0;
+            name = "black_pawn";
+        }
+        if(board.getPiece(i, k) != nullptr && board.getPiece(i, k)->getName() == name){
+            window.displayChoosePiece(board, currentPlayer);
+            return true;
+        }
+    }
+    return false;
+}
+
 void Game::start() {
     // Pc* first_player = new Pc();
     Player* white_player = new Player();
@@ -37,13 +56,28 @@ void Game::start() {
                 valid = false;
                 movement_white = white_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
                 valid = board.movePiece(movement_white.startX, movement_white.startY, movement_white.endX, movement_white.endY);
-                if(valid){
-                    for(int i = 0; i < 8; i++){
-                        if(board.getPiece(i, 7) != nullptr && board.getPiece(i, 7)->getName() == "white_pawn"){
-                            cout <<"Choose piece for White player"; 
-                            window.displayChoosePiece(board, WHITE);
+                while(Game::choosePiece(window, board, currentPlayer)){
+                    window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_white, isCheckmateWhite);
+                    string name = white_player->makeChoice(window);
+                    if(name != ""){
+                        for(int i = 0; i < 8; i++){
+                            if(board.getPiece(i, 7) != nullptr && board.getPiece(i, 7)->getName() == "white_pawn"){
+                                board.setPiece(i, 7, nullptr);
+                                if(name == "Knight"){
+                                    board.setPiece(i, 7, new Knight(WHITE));
+                                }else if(name == "Rook"){
+                                    board.setPiece(i, 7, new Rook(WHITE));
+                                }else if(name == "Bishop"){
+                                    board.setPiece(i, 7, new Bishop(WHITE));
+                                }else if(name == "Queen"){
+                                    board.setPiece(i, 7, new Queen(WHITE));
+                                }
+                            }
                         }
+                        valid = true;
                     }
+                }
+                if(valid){
                     Game::change_current_player(currentPlayer);
                 }
             }
@@ -56,20 +90,32 @@ void Game::start() {
                 valid = false;
                 movement_black = black_player->move(board, window, currentPlayer, selectedPiece, selectedPieceOriginalPos);
                 valid = board.movePiece(movement_black.startX, movement_black.startY, movement_black.endX, movement_black.endY);
-                if(valid){
-                    for(int i = 0; i < 8; i++){
-                        if(board.getPiece(i, 0) != nullptr && board.getPiece(i, 0)->getName() == "black_pawn"){
-                            cout <<"Choose piece for Black player"; 
-                            window.displayChoosePiece(board, BLACK);
+                while(Game::choosePiece(window, board, currentPlayer)){
+                    window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_white, isCheckmateWhite);
+                    string name = white_player->makeChoice(window);
+                    if(name != ""){
+                        for(int i = 0; i < 8; i++){
+                            if(board.getPiece(i, 0) != nullptr && board.getPiece(i, 0)->getName() == "black_pawn"){
+                                board.setPiece(i, 0, nullptr);
+                                if(name == "Knight"){
+                                    board.setPiece(i, 0, new Knight(BLACK));
+                                }else if(name == "Rook"){
+                                    board.setPiece(i, 0, new Rook(BLACK));
+                                }else if(name == "Bishop"){
+                                    board.setPiece(i, 0, new Bishop(BLACK));
+                                }else if(name == "Queen"){
+                                    board.setPiece(i, 0, new Queen(BLACK));
+                                }
+                            }
                         }
+                        valid = true;
                     }
+                }
+                if(valid){
                     Game::change_current_player(currentPlayer);
                 }
             }
         }
-        // if(board.getPiece(6, 7) != nullptr){
-        //     cout << "position (6, 7): " << board.getPiece(6, 7)->getName() << endl;
-        // }
         window.clear();
         if(currentPlayer == WHITE){
             window.display(board.getScoreWhite(), board.getScoreBlack(), board, currentPlayer, isCheck_white, isCheckmateWhite);
@@ -90,6 +136,6 @@ void Game::start() {
 
 
 
-// TODO: relalize choice of pieces when pown reachs the end of the board
+// OK: relalize choice of pieces when pown reachs the end of the board
 // TODO: implement capturing on the pass
 // TODO: implement castling

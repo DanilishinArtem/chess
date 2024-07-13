@@ -33,6 +33,8 @@ public:
 
     void displayLine();
 
+    string get_choosePiece(int x, int y) const;
+
     void displayBoard(const Board& board);
 
     void displayChoosePiece(const Board& board, Color currentPlayer);

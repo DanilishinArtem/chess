@@ -29,6 +29,7 @@ public:
     }
 
     int getValue() const override { return Value; }
+
 };
 
 #endif

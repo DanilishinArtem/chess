@@ -14,6 +14,7 @@ public:
     Game();
     void start();
     void change_current_player(Color& color);
+    bool choosePiece(window_class& window, const Board& board, Color& currentPlayer);
 
 private:
     Board board;

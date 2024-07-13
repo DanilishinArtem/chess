@@ -29,6 +29,8 @@ public:
 
     virtual int getValue() const { return Value; }
 
+    bool isFirstMove = true;
+
 protected:
     Color color;
     sf::Texture texture;

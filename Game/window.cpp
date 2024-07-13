@@ -114,24 +114,64 @@ void window_class::displayBoard(const Board& board) {
     }
 }
 
+string window_class::get_choosePiece(int x, int y) const {
+    const int cellSize = WidthInfo_ / 4;
+    if(x > 0 * cellSize && x < 1 * cellSize && y > HeightBoard_ / 2 && y < HeightBoard_ / 2 + cellSize){
+        return "Knight";
+    }else if(x > 1 * cellSize && x < 2 * cellSize && y > HeightBoard_ / 2 && y < HeightBoard_ / 2 + cellSize){
+        return "Rook";
+    }else if(x > 2 * cellSize && x < 3 * cellSize && y > HeightBoard_ / 2 && y < HeightBoard_ / 2 + cellSize){
+        return "Bishop";
+    }else if(x > 3 * cellSize && x < 4 * cellSize && y > HeightBoard_ / 2 && y < HeightBoard_ / 2 + cellSize){
+        return "Queen";
+    }
+    return "";
+}
+
 void window_class::displayChoosePiece(const Board& board, Color currentPlayer){
     font.loadFromFile("Game/fonts/ArialRegular.ttf");
     choosePiece.setFont(font);
     choosePiece.setCharacterSize(20);
     choosePiece.setFillColor(sf::Color::White);
     choosePiece.setPosition(WidthBoard_ + 10, HeightBoard_ / 2 - 30);
+    // can choose any piece beside pawn and king
+    const int cellSize = WidthInfo_ / 4;
+    sf::RectangleShape cell(sf::Vector2f(cellSize, cellSize));
+    cell.setFillColor(sf::Color::Black);
+    for(int x = 0; x < 4; x++){
+        cell.setPosition(WidthBoard_ + x * cellSize, HeightBoard_ / 2);
+        windowBoard.draw(cell);
+    }
+
+    string color = (currentPlayer == WHITE ? "white" : "black");
+    sf::Texture Knight, Rook, Bishop, Queen;
+    Knight.loadFromFile("Game/Board/PiecesClasses/images/" + color + "_knight.png");
+    Rook.loadFromFile("Game/Board/PiecesClasses/images/" + color + "_rook.png");
+    Bishop.loadFromFile("Game/Board/PiecesClasses/images/" + color + "_bishop.png");
+    Queen.loadFromFile("Game/Board/PiecesClasses/images/" + color + "_queen.png");
+    sf::Sprite spriteKnight, spriteRook, spriteBishop, spriteQueen;
+    spriteKnight.setTexture(Knight);
+    spriteRook.setTexture(Rook);
+    spriteBishop.setTexture(Bishop);
+    spriteQueen.setTexture(Queen);
+    spriteKnight.setPosition(WidthBoard_ + 0 * cellSize, HeightBoard_ / 2);
+    spriteRook.setPosition(WidthBoard_ + 1 * cellSize, HeightBoard_ / 2);
+    spriteBishop.setPosition(WidthBoard_ + 2 * cellSize, HeightBoard_ / 2);
+    spriteQueen.setPosition(WidthBoard_ + 3 * cellSize, HeightBoard_ / 2);
+
     string temp = "";
     if(currentPlayer == WHITE){
-        // cout <<"Choose piece for White player"; 
-        temp = "Choose piece for White player";
+        temp = "Choose piece for White Pawn";
     }else{
-        // cout <<"Choose piece for Black player"; 
-        temp = "Choose piece for Black player";
+        temp = "Choose piece for Black Pawn";
     }
     choosePiece.setString(temp);
     windowBoard.draw(choosePiece);
-
-
+    windowBoard.draw(spriteKnight);
+    windowBoard.draw(spriteRook);
+    windowBoard.draw(spriteBishop);
+    windowBoard.draw(spriteQueen);
+    windowBoard.display();
 }
 
 void window_class::display(int scoreWhite, int scoreBlack, const Board& board, Color currentPlayer, bool check, bool checkMate) {

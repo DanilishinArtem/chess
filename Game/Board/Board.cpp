@@ -130,31 +130,110 @@ bool Board::validTrace(int startX, int startY, int endX, int endY) const {
     return false;
 }
 
+
 bool Board::movePiece(int startX, int startY, int endX, int endY){
+    // no movement part
     if(startX == endX && startY == endY){
         return false;
     }
-    Piece* firstPiece = getPiece(startX, startY);
-    Piece* secondPiece = getPiece(endX, endY);
+    Piece* firstPiece = Board::getPiece(startX, startY);
+    Piece* secondPiece = Board::getPiece(endX, endY);
+    // second piece is empty
     if(!secondPiece){
+        // // part of capturing on the pass
+        // if((firstPiece->getName() == "white_pawn" || firstPiece->getName() == "black_pawn") && !firstPiece->isValidMove(startX, startY, endX, endY)){
+        //     // ...
+        // }
+        // // part of castling
+        // if((firstPiece->getName() == "white_king" || firstPiece->getName() == "black_king") && !firstPiece->isValidMove(startX, startY, endX, endY)){
+        //     if(Board::isCheck(firstPiece->getColor())){
+        //         return false;
+        //     }else{
+        //         if((abs(startY - endY) == 2) && firstPiece->isFirstMove){
+        //             int dir = SIGN(endY - startY);
+        //             if(dir > 0){
+        //                 if(Board::getPiece(startX + 3, startY)->isFirstMove){
+        //                     for(int i = 1; i < 3; i++){
+        //                         if(Board::getPiece(startX + i, startY) != nullptr){
+        //                             return false;
+        //                         }
+        //                     }
+        //                     Board::setPiece(startX + 2, startY, firstPiece);
+        //                     Board::setPiece(startX + 1, startY, Board::getPiece(startX + 3, startY));
+        //                     Board::setPiece(startX + 3, startY, nullptr);
+        //                     Board::setPiece(startX, startY, nullptr);
+        //                     if(Board::isCheck(firstPiece->getColor())){
+        //                         Board::setPiece(startX, startY, firstPiece);
+        //                         Board::setPiece(startX + 3, startY, Board::getPiece(startX + 1, startY));
+        //                         Board::setPiece(startX + 1, startY, nullptr);
+        //                         Board::setPiece(startX + 2, startY, nullptr);
+        //                         return false;
+        //                     }
+        //                     return true;
+        //                 }else{
+        //                     return false;
+        //                 }
+        //             }else{
+        //                 if(Board::getPiece(startX - 4, startY)->isFirstMove){
+        //                     for(int i = -1; i > -4; i--){
+        //                         if(Board::getPiece(startX + i, startY) != nullptr){
+        //                             return false;
+        //                         }
+        //                     }
+        //                     Board::setPiece(startX - 2, startY, firstPiece);
+        //                     Board::setPiece(startX - 1, startY, Board::getPiece(startX - 4, startY));
+        //                     Board::setPiece(startX - 4, startY, nullptr);
+        //                     Board::setPiece(startX, startY, nullptr);
+        //                     if(Board::isCheck(firstPiece->getColor())){
+        //                         Board::setPiece(startX, startY, firstPiece);
+        //                         Board::setPiece(startX - 4, startY, Board::getPiece(startX - 1, startY));
+        //                         Board::setPiece(startX - 1, startY, nullptr);
+        //                         Board::setPiece(startX - 2, startY, nullptr);
+        //                         return false;
+        //                     }
+        //                     return true;
+        //                 }else{
+        //                     return false;
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     return false;
+        // }
         if(firstPiece && Board::validTrace(startX, startY, endX, endY)){
-            setPiece(startX, startY, nullptr);
-            setPiece(endX, endY, firstPiece);
+            if(firstPiece->isFirstMove){
+                firstPiece->isFirstMove = false;
+            }
+            Board::setPiece(startX, startY, nullptr);
+            Board::setPiece(endX, endY, firstPiece);
             return true;
         }else{
             return false;
         }
+    // second piece is not empty
     }else{
         if(firstPiece && Board::validTrace(startX, startY, endX, endY) && (firstPiece->getColor() != secondPiece->getColor())){
             if(firstPiece->getColor() == WHITE){
-                updateScoreWhite(*secondPiece);
+                Board::updateScoreWhite(*secondPiece);
             }else{
-                updateScoreBlack(*secondPiece);
+                Board::updateScoreBlack(*secondPiece);
             }
-            setPiece(startX, startY, nullptr);
-            setPiece(endX, endY, firstPiece);
+            if(firstPiece->isFirstMove){
+                firstPiece->isFirstMove = false;
+            }
+            Board::setPiece(startX, startY, nullptr);
+            Board::setPiece(endX, endY, firstPiece);
             return true;            
         }
     }
     return false;
 }
+
+
+// Рокировка: 
+// 1. Рокировка это один ход (король делает движение на две клетки вбок а ладья заходит за короля), потом ход передается сопернику
+// 2. Рокировка не может быть сделана в то время, когда король уже сделал ход (также нельзя сделать рокировку в то время, когда ладья уже сделала ход)
+// 3. DONE: Рокировка невозможна для короля котоый находится под шахом
+// 4. Рокировка невозможна когда король проходит через битое поле или когда после рокировки он попадет под шах
+// 5. Рокировка невозможно если между королом и ладьей не свободны все поля
+
