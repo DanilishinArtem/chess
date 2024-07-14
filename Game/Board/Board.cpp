@@ -114,7 +114,7 @@ bool Board::validTrace(int startX, int startY, int endX, int endY) const {
     int dy = SIGN(endY - startY);
     int tempX = startX;
     int tempY = startY;
-    if(Board::getPiece(startX, startY)->isValidMove(startX, startY, endX, endY) || Board::getPiece(startX, startY)->eats(startX, startY, endX, endY)){
+    if(Board::getPiece(startX, startY)->isValidMove(startX, startY, endX, endY) || (Board::getPiece(startX, startY)->eats(startX, startY, endX, endY) && Board::getPiece(endX, endY))){
         while((tempX != endX) || (tempY != endY)){
             if(tempX + dx == endX && tempY + dy == endY){
                 return true;
@@ -131,6 +131,90 @@ bool Board::validTrace(int startX, int startY, int endX, int endY) const {
 }
 
 
+bool Board::castling(Piece* firstPiece, int startX, int startY, int endX, int endY){
+    if(Board::isCheck(firstPiece->getColor())){
+        return false;
+    }else{
+        if((abs(startX - endX) == 2) && firstPiece->isFirstMove){
+            int dir = SIGN(endX - startX);
+            if(dir > 0){
+                if(Board::getPiece(startX + 4, startY)->isFirstMove){
+                    for(int i = 1; i < 4; i++){
+                        if(Board::getPiece(startX + i, startY) != nullptr){
+                            return false;
+                        }
+                    }
+                    Board::setPiece(startX + 2, startY, firstPiece);
+                    Board::setPiece(startX + 1, startY, Board::getPiece(startX + 4, startY));
+                    Board::setPiece(startX + 4, startY, nullptr);
+                    Board::setPiece(startX, startY, nullptr);
+                    if(Board::isCheck(firstPiece->getColor())){
+                        Board::setPiece(startX, startY, firstPiece);
+                        Board::setPiece(startX + 4, startY, Board::getPiece(startX + 1, startY));
+                        Board::setPiece(startX + 1, startY, nullptr);
+                        Board::setPiece(startX + 2, startY, nullptr);
+                        return false;
+                    }
+                    return true;
+                }else{
+                    return false;
+                }
+            }else{
+                if(Board::getPiece(startX - 3, startY)->isFirstMove){
+                    for(int i = -1; i > -3; i--){
+                        if(Board::getPiece(startX + i, startY) != nullptr){
+                            return false;
+                        }
+                    }
+                    Board::setPiece(startX - 2, startY, firstPiece);
+                    Board::setPiece(startX - 1, startY, Board::getPiece(startX - 3, startY));
+                    Board::setPiece(startX - 3, startY, nullptr);
+                    Board::setPiece(startX, startY, nullptr);
+                    if(Board::isCheck(firstPiece->getColor())){
+                        Board::setPiece(startX, startY, firstPiece);
+                        Board::setPiece(startX - 3, startY, Board::getPiece(startX - 1, startY));
+                        Board::setPiece(startX - 1, startY, nullptr);
+                        Board::setPiece(startX - 2, startY, nullptr);
+                        return false;
+                    }
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool Board::capturing(Piece* firstPiece, int startX, int startY, int endX, int endY){
+    if(firstPiece->getColor() == WHITE){
+        if((startY == 4) && (endX == startX - 1 || endX == startX + 1) && (endY == startY + 1)){
+            cout << "capturing white" << endl;
+            if(Board::getPiece(endX, endY - 1) != nullptr && Board::getPiece(endX, endY - 1)->twoSteps && Board::getPiece(endX, endY - 1)->getName() == "black_pawn"){
+                Board::setPiece(endX, endY - 1, nullptr);
+                Board::setPiece(startX, startY, nullptr);
+                Board::setPiece(endX, endY, firstPiece);
+                Board::updateScoreWhite(*firstPiece);
+                return true;
+            }
+        }
+    }else{
+        cout << "capturing black" << endl;
+        if((startY == 3) && (endX == startX - 1 || endX == startX + 1) && (endY == startY - 1)){
+            if(Board::getPiece(endX, endY + 1) != nullptr && Board::getPiece(endX, endY + 1)->twoSteps && Board::getPiece(endX, endY + 1)->getName() == "white_pawn"){
+                Board::setPiece(endX, endY + 1, nullptr);
+                Board::setPiece(startX, startY, nullptr);
+                Board::setPiece(endX, endY, firstPiece);
+                Board::updateScoreWhite(*firstPiece);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
 bool Board::movePiece(int startX, int startY, int endX, int endY){
     // no movement part
     if(startX == endX && startY == endY){
@@ -140,66 +224,19 @@ bool Board::movePiece(int startX, int startY, int endX, int endY){
     Piece* secondPiece = Board::getPiece(endX, endY);
     // second piece is empty
     if(!secondPiece){
-        // // part of capturing on the pass
-        // if((firstPiece->getName() == "white_pawn" || firstPiece->getName() == "black_pawn") && !firstPiece->isValidMove(startX, startY, endX, endY)){
-        //     // ...
-        // }
-        // // part of castling
-        // if((firstPiece->getName() == "white_king" || firstPiece->getName() == "black_king") && !firstPiece->isValidMove(startX, startY, endX, endY)){
-        //     if(Board::isCheck(firstPiece->getColor())){
-        //         return false;
-        //     }else{
-        //         if((abs(startY - endY) == 2) && firstPiece->isFirstMove){
-        //             int dir = SIGN(endY - startY);
-        //             if(dir > 0){
-        //                 if(Board::getPiece(startX + 3, startY)->isFirstMove){
-        //                     for(int i = 1; i < 3; i++){
-        //                         if(Board::getPiece(startX + i, startY) != nullptr){
-        //                             return false;
-        //                         }
-        //                     }
-        //                     Board::setPiece(startX + 2, startY, firstPiece);
-        //                     Board::setPiece(startX + 1, startY, Board::getPiece(startX + 3, startY));
-        //                     Board::setPiece(startX + 3, startY, nullptr);
-        //                     Board::setPiece(startX, startY, nullptr);
-        //                     if(Board::isCheck(firstPiece->getColor())){
-        //                         Board::setPiece(startX, startY, firstPiece);
-        //                         Board::setPiece(startX + 3, startY, Board::getPiece(startX + 1, startY));
-        //                         Board::setPiece(startX + 1, startY, nullptr);
-        //                         Board::setPiece(startX + 2, startY, nullptr);
-        //                         return false;
-        //                     }
-        //                     return true;
-        //                 }else{
-        //                     return false;
-        //                 }
-        //             }else{
-        //                 if(Board::getPiece(startX - 4, startY)->isFirstMove){
-        //                     for(int i = -1; i > -4; i--){
-        //                         if(Board::getPiece(startX + i, startY) != nullptr){
-        //                             return false;
-        //                         }
-        //                     }
-        //                     Board::setPiece(startX - 2, startY, firstPiece);
-        //                     Board::setPiece(startX - 1, startY, Board::getPiece(startX - 4, startY));
-        //                     Board::setPiece(startX - 4, startY, nullptr);
-        //                     Board::setPiece(startX, startY, nullptr);
-        //                     if(Board::isCheck(firstPiece->getColor())){
-        //                         Board::setPiece(startX, startY, firstPiece);
-        //                         Board::setPiece(startX - 4, startY, Board::getPiece(startX - 1, startY));
-        //                         Board::setPiece(startX - 1, startY, nullptr);
-        //                         Board::setPiece(startX - 2, startY, nullptr);
-        //                         return false;
-        //                     }
-        //                     return true;
-        //                 }else{
-        //                     return false;
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     return false;
-        // }
+        // part of capturing on the pass
+        if((firstPiece->getName() == "white_pawn" || firstPiece->getName() == "black_pawn") && !firstPiece->isValidMove(startX, startY, endX, endY)){
+            cout << "capturing" << endl;
+            return Board::capturing(firstPiece, startX, startY, endX, endY);
+        }
+
+        // part of castling
+        if((firstPiece->getName() == "white_king" || firstPiece->getName() == "black_king") && !firstPiece->isValidMove(startX, startY, endX, endY)){
+            return Board::castling(firstPiece, startX, startY, endX, endY);
+        }
+
+
+
         if(firstPiece && Board::validTrace(startX, startY, endX, endY)){
             if(firstPiece->isFirstMove){
                 firstPiece->isFirstMove = false;
@@ -229,11 +266,4 @@ bool Board::movePiece(int startX, int startY, int endX, int endY){
     return false;
 }
 
-
-// Рокировка: 
-// 1. Рокировка это один ход (король делает движение на две клетки вбок а ладья заходит за короля), потом ход передается сопернику
-// 2. Рокировка не может быть сделана в то время, когда король уже сделал ход (также нельзя сделать рокировку в то время, когда ладья уже сделала ход)
-// 3. DONE: Рокировка невозможна для короля котоый находится под шахом
-// 4. Рокировка невозможна когда король проходит через битое поле или когда после рокировки он попадет под шах
-// 5. Рокировка невозможно если между королом и ладьей не свободны все поля
 

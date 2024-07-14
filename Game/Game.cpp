@@ -137,5 +137,10 @@ void Game::start() {
 
 
 // OK: relalize choice of pieces when pown reachs the end of the board
-// TODO: implement capturing on the pass
-// TODO: implement castling
+// OK: implement capturing on the pass
+// OK: implement castling
+
+
+
+// Tourbles:
+    // checkmate

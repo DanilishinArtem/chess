@@ -20,15 +20,22 @@ public:
 
     string getTextureFile() const override { return color == WHITE ? "Game/Board/PiecesClasses/images/white_pawn.png" : "Game/Board/PiecesClasses/images/black_pawn.png"; }
 
-    bool isValidMove(int startX, int startY, int endX, int endY) const override {
+    bool isValidMove(int startX, int startY, int endX, int endY) override {
+        bool out = false;
         if(color == WHITE){
-            return (endX == startX && endY == startY + 1) || (startY == 1 && endY == startY + 2 && endX == startX);
+            out = (endX == startX && endY == startY + 1) || (startY == 1 && endY == startY + 2 && endX == startX);
         }else{
-            return (endX == startX && endY == startY - 1) || (startY == 6 && endY == startY - 2 && endX == startX);
+            out = (endX == startX && endY == startY - 1) || (startY == 6 && endY == startY - 2 && endX == startX);
         }
+        if(out){
+            if(abs(startY - endY) == 2){
+                twoSteps = true;
+            }
+        }
+        return out;
     }
 
-    bool eats(int startX, int startY, int endX, int endY) const override {
+    bool eats(int startX, int startY, int endX, int endY) override {
         if(color == WHITE){
             return (endX == startX + 1 && endY == startY + 1) || (endX == startX - 1 && endY == startY + 1);
         }else{
@@ -37,6 +44,7 @@ public:
     }
 
     int getValue() const override { return Value; }
+
 };
 
 #endif

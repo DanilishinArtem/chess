@@ -33,6 +33,8 @@ public:
     bool validTrace(int startX, int startY, int endX, int endY) const;
     bool isCheck(Color color) const;
     bool isCheckmate(Color color) const;
+    bool castling(Piece* firstPiece, int startX, int startY, int endX, int endY);
+    bool capturing(Piece* firstPiece, int startX, int startY, int endX, int endY);
 
 private:
     vector<vector<Piece*>> board;

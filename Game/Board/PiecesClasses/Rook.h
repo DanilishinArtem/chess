@@ -19,11 +19,11 @@ public:
 
     string getTextureFile() const override { return color == WHITE ? "Game/Board/PiecesClasses/images/white_rook.png" : "Game/Board/PiecesClasses/images/black_rook.png"; }
 
-    bool isValidMove(int startX, int startY, int endX, int endY) const override {
+    bool isValidMove(int startX, int startY, int endX, int endY) override {
         return (startX == endX || startY == endY);
     }
 
-    bool eats(int startX, int startY, int endX, int endY) const override {
+    bool eats(int startX, int startY, int endX, int endY) override {
         return isValidMove(startX, startY, endX, endY);
     }
 

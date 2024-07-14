@@ -21,15 +21,17 @@ public:
 
     virtual string getTextureFile() const = 0;
 
-    virtual bool isValidMove( int startX, int startY, int endX, int endY) const = 0;
+    virtual bool isValidMove( int startX, int startY, int endX, int endY) = 0;
 
-    virtual bool eats( int startX, int startY, int endX, int endY) const = 0;
+    virtual bool eats( int startX, int startY, int endX, int endY) = 0;
 
     sf::Texture getTexture() const { return texture; }
 
     virtual int getValue() const { return Value; }
 
     bool isFirstMove = true;
+
+    bool twoSteps = false;
 
 protected:
     Color color;
